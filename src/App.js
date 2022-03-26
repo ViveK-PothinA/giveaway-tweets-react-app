@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import NavBar from './components/NavBar';
+
+import { SearchSpace } from './components/SearchSpace';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <title>Giveaway Tweets Search Engine</title>
+      <meta name="description" content="Giveaway Tweets Search Engine" />
+      <meta property="og:type" content="website" />
+      <meta name="robots" content="follow, index" />
+
+      <meta property="og:title" content="Giveaway Tweets Search Engine" />
+      <meta property="og:image" content="/favicon.ico" />
+      <link rel="icon" href="/favicon.ico" />
+        <NavBar />
+        {/* <SearchSpace baseURL="http://localhost:8000/"/> */}
+        <SearchSpace baseURL="https://ir-search-fastapi-app.herokuapp.com/"/>
     </div>
   );
 }
