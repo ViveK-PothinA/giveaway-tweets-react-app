@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flex, Box, Button, Stack, Input, RadioGroup, Radio, InputGroup, InputLeftElement, useColorModeValue, VStack, List, ListItem, Heading } from "@chakra-ui/react";
+import { Flex, Box, Button, Stack, Input, RadioGroup, Radio, InputGroup, InputLeftElement, useColorModeValue, useToast, VStack, List, ListItem, Heading, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from "@chakra-ui/react";
 import { Search2Icon } from '@chakra-ui/icons';
 import { TweetListItem } from './TweetListItem';
 
@@ -15,6 +15,7 @@ export const SearchSpace = (props) => {
     let [searchLoading, setSearchLoading] = useState(false);
     let [searchResults, setSearchResults] = useState([]);
     let [searchTime, setSearchTime] = useState(null);
+    const toast = useToast()
 
     const emptyFetch = async () => {
         try {
@@ -32,9 +33,22 @@ export const SearchSpace = (props) => {
                 setSearchLoading(true);
                 const response = await fetch(props.baseURL + "search/" + searchMode + "/" + query);
                 const jsonData = await response.json();
-
-                setSearchResults(jsonData.search_results);
-                setSearchTime(jsonData.search_time);
+                
+                if (response.status == 200) {
+                    setSearchResults(jsonData.search_results);
+                    setSearchTime(jsonData.search_time);
+                } else {
+                    toast({
+                        title: "Error (Response status: " + response.status + ")",
+                        variant:'solid',
+                        position: 'bottom-right',
+                        description: jsonData.message,
+                        status: 'error',
+                        duration: 6000,
+                        isClosable: true,
+                      })
+                }
+                
                 setSearchLoading(false);
             } catch (err) {
                 console.error(err.message);
@@ -45,10 +59,28 @@ export const SearchSpace = (props) => {
     const bgColor = useColorModeValue('twitter.400', 'twitter.800');
     return (
         <div>
-
+            <Accordion defaultIndex={[1]} allowMultiple pt={12} px={5}>
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton>
+                            <Box flex='1' textAlign='left'>
+                                What is this project about?
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                        The objective of the project is to build a search engine on Giveaway tweets, to make it searchable
+                        and accessible for users to access through simple keyword searches. For the scope of this project, only
+                        Bitcoin(BTC), Ethereum(ETH), and NFT Giveaways so, corpus of tweets containing hashtags: #giveaway #BTC,
+                        #giveaway #ETH, #giveaway #crypto, and #giveaway #NFT was collected. This corpus was indexed with Lucene
+                        and also, Hadoop MapReduce was used to generate Inverse Document Frequency.
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
             <Flex justifyContent={'center'} w={'full'} h={'auto'}>
                 <Box width={{ base: 'full', sm: 'lg', lg: 'xl' }} my='5'>
-                    <InputGroup size='lg' mt={10} mb={3}>
+                    <InputGroup size='lg' mb={3}>
                         <InputLeftElement
                             pointerEvents='none'
                             children={<Search2Icon />}
@@ -59,16 +91,18 @@ export const SearchSpace = (props) => {
                             placeholder='Type here to search' backgroundColor='whiteAlpha.300' />
                     </InputGroup>
 
-                    <RadioGroup onChange={setValue} value={value}>
-                        <Stack direction='row' justifyContent={'center'}>
-                            <Radio value='lucene'>Lucene</Radio>
-                            <Radio value='hadoop'>Hadoop</Radio>
-                            <Button colorScheme='twitter'
-                                isLoading={searchLoading}
-                                loadingText='Loading'
-                                onClick={() => fetchSearchResults(value, query)}>Search</Button>
-                        </Stack>
-                    </RadioGroup>
+
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' >
+                        <RadioGroup onChange={setValue} value={value}>
+                            <Radio value='lucene'>Lucene Indexed</Radio>
+                            <Radio value='hadoop' pl={6}>IDF by Hadoop MapReduce</Radio>
+                        </RadioGroup>
+                        <Button colorScheme='twitter'
+                            isLoading={searchLoading}
+                            loadingText='Loading' size='md'
+                            onClick={() => fetchSearchResults(value, query)}>Search</Button>
+                    </Stack>
+
                 </Box>
             </Flex>
             <Heading as={"h5"} size='sm'>Try queries like "ETH AND btc AND cool" or "aaanft OR aaarrh"</Heading>

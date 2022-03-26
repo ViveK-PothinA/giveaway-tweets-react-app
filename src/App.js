@@ -16,8 +16,8 @@ function App() {
       <meta property="og:image" content="/favicon.ico" />
       <link rel="icon" href="/favicon.ico" />
         <NavBar />
-        {/* <SearchSpace baseURL="http://localhost:8000/"/> */}
-        <SearchSpace baseURL="https://giveaway-tweets-search.herokuapp.com/"/>
+        <SearchSpace baseURL="http://localhost:8000/"/>
+        {/* <SearchSpace baseURL="https://giveaway-tweets-search.herokuapp.com/"/> */}
     </div>
   );
 }
