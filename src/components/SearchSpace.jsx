@@ -38,6 +38,7 @@ export const SearchSpace = (props) => {
                     setSearchResults(jsonData.search_results);
                     setSearchTime(jsonData.search_time);
                 } else {
+                    setSearchResults([]);
                     toast({
                         title: "Error (Response status: " + response.status + ")",
                         variant:'solid',
