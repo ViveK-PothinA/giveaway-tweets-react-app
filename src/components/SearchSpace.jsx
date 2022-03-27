@@ -73,8 +73,8 @@ export const SearchSpace = (props) => {
                     <AccordionPanel pb={4}>
                         The objective of the project is to build a search engine on Giveaway tweets, to make it searchable
                         and accessible for users to access through simple keyword searches. For the scope of this project, only
-                        Bitcoin(BTC), Ethereum(ETH), and NFT Giveaways so, corpus of tweets containing hashtags: #giveaway #BTC,
-                        #giveaway #ETH, #giveaway #crypto, and #giveaway #NFT was collected. This corpus was indexed with Lucene
+                        Bitcoin(BTC), Ethereum(ETH), and NFT Giveaways were selected. A corpus of tweets containing hashtags: #giveaway #BTC,
+                        #giveaway #ETH, #giveaway #crypto, and #giveaway #NFT was collected. It was indexed with Lucene
                         and also, Hadoop MapReduce was used to generate Inverse Document Frequency.
                     </AccordionPanel>
                 </AccordionItem>
